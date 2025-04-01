@@ -4,6 +4,7 @@ from flask_cors import CORS
 from models import db
 from routes import transaction_routes
 from ai_routes import ai_routes 
+from flask_migrate import Migrate
 
 
 app = Flask(__name__)
@@ -16,9 +17,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Initialize database
 db.init_app(app)
 
-# Create tables before running the server
-with app.app_context():
-    db.create_all()
+# ✅ Initialize Flask-Migrate
+migrate = Migrate(app, db)
 
 # Register routes
 app.register_blueprint(transaction_routes)

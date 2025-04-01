@@ -38,9 +38,16 @@ def add_transaction():
         return jsonify({'error': str(e)}), 500
 
 # Retrieve all transactions
+# Retrieve transactions for the logged-in user
 @transaction_routes.route('/transactions', methods=['GET'])
 def get_transactions():
-    transactions = Transaction.query.all()
+    user_email = request.args.get('email')  # ✅ Get the email from the request
+
+    if not user_email:
+        return jsonify({"error": "User email is required"}), 400
+
+    transactions = Transaction.query.filter_by(user_email=user_email).all()
+
     transactions_list = [{
         'id': t.id,
         'date': t.date,
