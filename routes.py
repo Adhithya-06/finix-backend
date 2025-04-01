@@ -38,14 +38,9 @@ def add_transaction():
         return jsonify({'error': str(e)}), 500
 
 # Retrieve all transactions
-# Retrieve all transactions for a specific user
 @transaction_routes.route('/transactions', methods=['GET'])
 def get_transactions():
-    user_email = request.args.get('email')  # 👈 Fetch email from query params
-    if not user_email:
-        return jsonify({'error': 'Missing user email'}), 400
-
-    transactions = Transaction.query.filter_by(user_email=user_email).all()
+    transactions = Transaction.query.all()
     transactions_list = [{
         'id': t.id,
         'date': t.date,
@@ -54,7 +49,6 @@ def get_transactions():
     } for t in transactions]
 
     return jsonify(transactions_list), 200
-
 
 # Delete a transaction
 @transaction_routes.route('/delete_transaction/<int:transaction_id>', methods=['DELETE'])
