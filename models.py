@@ -9,4 +9,4 @@ class Transaction(db.Model):
     date = db.Column(db.String(50), nullable=False)
     category = db.Column(db.String(100), nullable=False)
     amount = db.Column(db.Float, nullable=False)
-    user_email = db.Column(db.String(100), nullable=False) 
+
