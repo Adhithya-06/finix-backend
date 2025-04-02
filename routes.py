@@ -4,9 +4,9 @@ from models import db, Transaction
 
 transaction_routes = Blueprint('transaction_routes', __name__)
 
-UPLOAD_FOLDER = "uploads"  # Set upload folder
+UPLOAD_FOLDER = "uploads"
 if not os.path.exists(UPLOAD_FOLDER):  
-    os.makedirs(UPLOAD_FOLDER)  # Ensure folder exists
+    os.makedirs(UPLOAD_FOLDER)
 
 # Home Route
 @transaction_routes.route('/', methods=['GET'])
@@ -38,15 +38,9 @@ def add_transaction():
         return jsonify({'error': str(e)}), 500
 
 # Retrieve all transactions
-# Retrieve transactions for the logged-in user
 @transaction_routes.route('/transactions', methods=['GET'])
 def get_transactions():
-    user_email = request.args.get('email')  # ✅ Get the email from the request
-
-    if not user_email:
-        return jsonify({"error": "User email is required"}), 400
-
-    transactions = Transaction.query.filter_by(user_email=user_email).all()
+    transactions = Transaction.query.all()
 
     transactions_list = [{
         'id': t.id,
@@ -70,13 +64,10 @@ def delete_transaction(transaction_id):
         db.session.commit()
 
         return jsonify({'message': 'Transaction deleted successfully'}), 200
-    
-    
 
     except Exception as e:
-        print(f"❌ ERROR: {e}")  # Debugging
+        print(f"❌ ERROR: {e}")
         return jsonify({'error': str(e)}), 500
-
 
 # Upload bank statement
 @transaction_routes.route('/upload_statement', methods=['POST'])
@@ -91,7 +82,7 @@ def upload_statement():
     file.save(f"uploads/{file.filename}")
     return jsonify({'message': f'File {file.filename} uploaded successfully'}), 200
 
-# ✅ Update a transaction
+# Update a transaction
 @transaction_routes.route('/update_transaction/<int:transaction_id>', methods=['PUT'])
 def update_transaction(transaction_id):
     try:
