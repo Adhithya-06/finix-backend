@@ -37,10 +37,15 @@ def add_transaction():
         print(f"❌ ERROR: {e}")  # Debugging
         return jsonify({'error': str(e)}), 500
 
-# Retrieve all transactions
+# Retrieve all transactions-LATEST
 @transaction_routes.route('/transactions', methods=['GET'])
 def get_transactions():
-    transactions = Transaction.query.all()
+    user_email = request.args.get('email')  # ✅ Get email from query param
+
+    if not user_email:
+        return jsonify({"error": "User email is required"}), 400
+
+    transactions = Transaction.query.filter_by(user_email=user_email).all()
 
     transactions_list = [{
         'id': t.id,
@@ -49,7 +54,8 @@ def get_transactions():
         'amount': t.amount
     } for t in transactions]
 
-    return jsonify(transactions_list), 200
+    return jsonify(transactions_list), 200 
+
 
 # Delete a transaction
 @transaction_routes.route('/delete_transaction/<int:transaction_id>', methods=['DELETE'])
