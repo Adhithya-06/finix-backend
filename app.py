@@ -11,7 +11,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Database Configuration (using SQLite)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'  # Change if using MySQL/PostgreSQL
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db' 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize database
