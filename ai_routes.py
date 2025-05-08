@@ -5,8 +5,7 @@ from models import db, Transaction
 from datetime import timedelta
 from statsmodels.tsa.arima.model import ARIMA
 import warnings
-from sklearn.metrics import mean_absolute_error, mean_squared_error
-from math import sqrt
+
 
 warnings.filterwarnings("ignore")  # Suppress ARIMA convergence warnings
 
